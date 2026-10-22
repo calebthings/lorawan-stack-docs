@@ -403,3 +403,90 @@
     display: none;
   }
 }
+
+// ---------------------------------------------------------------------------
+// Accessibility
+
+// Visible keyboard focus on every interactive element
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible,
+.button:focus-visible,
+.navbar-item:focus-visible {
+  outline: 2px solid $tts-500;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid $tts-500;
+  outline-offset: 1px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: $space-2;
+  top: -100px;
+  z-index: 100;
+  @include type-label-large;
+  background-color: $tts-500;
+  color: $white;
+  padding: $space-1 $space-2;
+  border-radius: $radius-default;
+
+  &:focus {
+    top: $space-2;
+    color: $white;
+  }
+}
+
+// Menu button is a real <button>: reset the native styles
+button.navbar-burger {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: $grey-900;
+  border-radius: $radius-default;
+  align-self: center;
+
+  &:hover {
+    background-color: $tts-050;
+  }
+}
+
+// Links inside running text are underlined, not identified by color alone
+.content p a:not(.button),
+.content li a:not(.button),
+.content td a:not(.button),
+.notification a:not(.button) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+// DocSearch placeholder passes contrast
+.DocSearch-Button-Placeholder {
+  color: $grey-600 !important;
+}
+
+// Command tree targets are at least 24px tall (WCAG 2.5.8)
+.side-navigation details summary {
+  min-height: 24px;
+  line-height: 24px;
+
+  a, span {
+    display: inline-block;
+    min-width: 24px;
+    min-height: 24px;
+    line-height: 24px;
+  }
+}
