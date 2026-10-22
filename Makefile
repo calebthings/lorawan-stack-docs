@@ -17,6 +17,9 @@ HUGO_BUILD_FLAGS = -tags extended
 HUGO_MODULE = github.com/gohugoio/hugo
 HUGO ?= $(GO) run $(HUGO_BUILD_FLAGS) $(HUGO_MODULE)
 YARN_DEPS = doc/themes/the-things-stack/node_modules
+# Search index (https://pagefind.app), installed by `make js.deps`
+PAGEFIND ?= doc/node_modules/.bin/pagefind
+SEARCH_DEV_SITE = .search-dev-site
 FREQUENCY_PLAN_URL ?= \
 https://raw.githubusercontent.com/TheThingsNetwork/lorawan-frequency-plans/master/frequency-plans.yml
 FREQUENCY_PLAN_DEST = doc/data/frequency-plans.yml
@@ -45,10 +48,20 @@ clean.deps:
 .PHONY: build.internal
 build.internal:
 	$(HUGO) --source $(DOC_ROOT) --destination $(INTERNAL_DEST)
+	$(PAGEFIND) --site internal
 
 .PHONY: build.public
 build.public:
 	$(HUGO) --source $(DOC_ROOT) --destination $(PUBLIC_DEST) --baseURL $(HUGO_BASE_URL) --environment $(ENVIRONMENT)
+	$(PAGEFIND) --site public
+
+# Build the search index for `make server` (written to doc/static/pagefind, git-ignored).
+# Re-run after content changes to update local search results.
+.PHONY: search.index
+search.index:
+	$(HUGO) --source $(DOC_ROOT) --destination ../$(SEARCH_DEV_SITE) --environment $(ENVIRONMENT) --quiet
+	$(PAGEFIND) --site $(SEARCH_DEV_SITE) --output-path doc/static/pagefind
+	rm -rf $(SEARCH_DEV_SITE)
 
 .PHONY: server
 server:

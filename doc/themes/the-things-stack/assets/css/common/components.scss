@@ -114,14 +114,6 @@
     }
   }
 
-  .navbar-search-menu {
-    padding: 0;
-    margin-right: $space-1;
-  }
-
-  .DocSearch-Button {
-    margin: 0 !important;
-  }
 
   @media (min-width: $navbar-breakpoint) {
     .navbar-start {
@@ -305,27 +297,165 @@
   }
 }
 
-// Search button (DocSearch): brand radius, and icon-only below 1344px until there is room
-// for the full field, so the top navigation never overflows.
-.DocSearch-Button {
-  border-radius: $radius-default !important;
+// Navigation search (Pagefind): a field from 1408px, an icon button below that,
+// so the top navigation never overflows. Both lead to the search page.
+.navbar .nav-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-right: $space-1;
 }
 
-@media (max-width: 1343px) {
-  .navbar .DocSearch-Button {
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    justify-content: center;
+.nav-search__icon {
+  position: absolute;
+  left: 12px;
+  color: $grey-600;
+  pointer-events: none;
+}
 
-    .DocSearch-Button-Placeholder,
-    .DocSearch-Button-Keys {
-      display: none;
-    }
+.nav-search__input {
+  width: 208px;
+  height: 40px;
+  padding: 0 64px 0 36px;
+  font-family: $font-body;
+  font-size: 15px;
+  line-height: 21px;
+  color: $grey-900;
+  background-color: $grey-050;
+  border: 1px solid $grey-200;
+  border-radius: $radius-default;
+  transition: border-color $dur-fast $ease-standard, background-color $dur-fast $ease-standard;
 
-    .DocSearch-Button-Container {
-      justify-content: center;
-    }
+  &::placeholder {
+    color: $grey-600;
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: $grey-300;
+  }
+
+  &:focus {
+    background-color: $white;
+  }
+}
+
+// Focus on search fields: a single, neutral darker border instead of the blue
+// focus ring (grey-500 on white is 3.3:1, enough for a visible focus state).
+.nav-search__input,
+.search-form__input {
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: $grey-500;
+  }
+}
+
+// Search fields use our own clear button (Tabler "x") instead of the browser's
+.nav-search__input,
+.search-form__input {
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+.search-clear {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: $grey-600;
+  background: none;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color $dur-fast $ease-standard, background-color $dur-fast $ease-standard;
+
+  &:hover {
+    color: $grey-900;
+    background-color: $grey-100;
+  }
+
+  input:placeholder-shown ~ & {
+    display: none;
+  }
+}
+
+.nav-search .search-clear {
+  right: $space-1;
+}
+
+.nav-search__input:not(:placeholder-shown) {
+  padding-right: 40px;
+}
+
+.nav-search__kbd {
+  position: absolute;
+  right: $space-1;
+  font-family: $font-mono;
+  font-size: 12px;
+  line-height: 16px;
+  color: $grey-600;
+  background-color: $white;
+  border: 1px solid $grey-200;
+  border-radius: 4px;
+  padding: 2px 6px;
+  pointer-events: none;
+
+  .nav-search__input:focus ~ &,
+  .nav-search__input:not(:placeholder-shown) ~ & {
+    display: none;
+  }
+}
+
+.navbar a.nav-search-button {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0 $space-1 0 0;
+  color: $grey-900;
+  background-color: $grey-050;
+  border: 1px solid $grey-200;
+  border-radius: $radius-default;
+
+  &:hover {
+    background-color: $tts-050;
+    color: $tts-700;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 1407px) {
+  .navbar .nav-search {
+    display: none;
+  }
+
+  .navbar a.nav-search-button {
+    display: flex;
+  }
+}
+
+@media (max-width: $navbar-breakpoint - 1px) {
+  .navbar a.nav-search-button {
+    margin-left: auto;
+    align-self: center;
+  }
+
+  .navbar .navbar-burger {
+    margin-left: $space-1;
   }
 }
 
@@ -471,11 +601,6 @@ button.navbar-burger {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
-}
-
-// DocSearch placeholder passes contrast
-.DocSearch-Button-Placeholder {
-  color: $grey-600 !important;
 }
 
 // Command tree targets are at least 24px tall (WCAG 2.5.8)

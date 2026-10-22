@@ -191,6 +191,45 @@ function initializeNavGroups () {
   })
 }
 
+// Clear buttons inside search fields
+function initializeSearchClear () {
+  document.addEventListener('click', function (e) {
+    var button = e.target.closest('.search-clear')
+    if (!button) return
+    var input = button.parentElement.querySelector('input[type="search"]')
+    if (!input) return
+    input.value = ''
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    input.focus()
+  })
+}
+
+// Search shortcut: Cmd/Ctrl+K or "/" focuses the search field (or opens the
+// search page when the navigation shows only the search icon).
+function initializeSearchShortcut () {
+  var isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
+  document.querySelectorAll('[data-search-shortcut]').forEach(function (el) {
+    el.textContent = isMac ? '⌘K' : 'Ctrl K'
+  })
+  document.addEventListener('keydown', function (e) {
+    var target = e.target
+    var typing = target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))
+    var isShortcut = (e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey)
+    if (!isShortcut && !(e.key === '/' && !typing)) return
+    var pageInput = document.getElementById('search-input')
+    var navInput = document.getElementById('nav-search-input')
+    var field = pageInput || (navInput && navInput.offsetParent ? navInput : null)
+    e.preventDefault()
+    if (field) {
+      field.focus()
+      field.select()
+    } else {
+      var link = document.querySelector('.nav-search-button')
+      if (link) window.location.href = link.href
+    }
+  })
+}
+
 // Horizontally scrollable tables and tab bars must be reachable by keyboard.
 function makeScrollableRegionsFocusable () {
   document.querySelectorAll('.content table, .tabs').forEach(function (el) {
@@ -207,6 +246,8 @@ function makeScrollableRegionsFocusable () {
 document.addEventListener('DOMContentLoaded', function () {
   addNavBarBurgers()
   initializeNavGroups()
+  initializeSearchShortcut()
+  initializeSearchClear()
   makeScrollableRegionsFocusable()
   initializeTabsAndAnchors()
   addLightboxHandler()

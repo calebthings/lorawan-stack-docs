@@ -1,0 +1,11 @@
+{{- /*
+  Returns the display name of the page's top-level section: the main menu
+  label when the section is in the menu (e.g. "Cloud"), otherwise its title.
+  Used as the "section" filter for search.
+*/ -}}
+{{- $fs := .FirstSection -}}
+{{- $name := $fs.Title -}}
+{{- range site.Menus.main -}}
+  {{- if and .Page (eq .Page $fs) -}}{{- $name = .Name -}}{{- end -}}
+{{- end -}}
+{{- return $name -}}

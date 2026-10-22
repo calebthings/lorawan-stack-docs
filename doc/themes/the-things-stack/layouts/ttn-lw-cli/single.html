@@ -10,9 +10,9 @@
       {{ partial "sidebar/command-side-navigation.html" . }}
     </div>
     <div class="column is-8">
-      <div class="docs-content">
+      <div class="docs-content" data-pagefind-body data-pagefind-filter="section:CLI reference">
         <div class="content">{{ .Content }}</div>
-        {{ partial "feedback" . }}
+        <div data-pagefind-ignore="all">{{ partial "feedback" . }}</div>
       </div>
     </div>
   </div>
