@@ -1,0 +1,11 @@
+{{- /* Native search (Pagefind): the field submits to the search page. */ -}}
+<form class="navbar-item nav-search" role="search" action="{{ relURL "search/" }}" method="get">
+  <label for="nav-search-input" class="is-sr-only">Search the documentation</label>
+  {{ partial "icon.html" (dict "name" "search" "size" 16 "class" "nav-search__icon") }}
+  <input id="nav-search-input" class="nav-search__input" type="search" name="q" placeholder="Search docs" autocomplete="off" enterkeyhint="search">
+  <button type="button" class="search-clear" aria-label="Clear search">{{ partial "icon.html" (dict "name" "x" "size" 16) }}</button>
+  <kbd class="nav-search__kbd" aria-hidden="true" data-search-shortcut>⌘K</kbd>
+</form>
+<a class="navbar-item nav-search-button" href="{{ relURL "search/" }}" aria-label="Search the documentation">
+  {{ partial "icon.html" (dict "name" "search" "size" 24) }}
+</a>

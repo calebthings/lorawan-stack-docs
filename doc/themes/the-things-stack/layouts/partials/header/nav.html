@@ -4,10 +4,7 @@
       <a class="navbar-item" href="{{ relURL "" }}">
         <img class="logo" src="{{ "img/tts-horizontal-standard-color.svg" | relURL }}" alt="The Things Stack documentation home" width="166" height="32">
       </a>
-      {{- if .Site.Params.search.enabled -}}
-          <div class="navbar-item navbar-search-menu" id="search-input-menu">
-          </div>
-        {{- end -}}
+      {{- if not .Params.hidesearch }}{{ partial "header/search-field.html" . }}{{ end -}}
       {{- $currentPage := . -}}
       {{- range .Site.Menus.brand }}
       <a class="navbar-item{{ if $currentPage.IsMenuCurrent "brand" . }} is-active{{ end }}" href="{{ .URL }}">{{ .Pre }}{{ .Name }}</a>
@@ -77,16 +74,3 @@
     </div>
   </div>
 </nav>
-
-{{- if .Site.Params.search.enabled -}}
-  <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-  <script type="text/javascript">
-    docsearch({
-      appId: {{ .Site.Params.search.appid }},
-      apiKey: {{ .Site.Params.search.apikey }},
-      indexName: {{ .Site.Params.search.index }},
-      container: '#search-input-menu',
-      debug: false, // Set debug to true if you want to inspect the dropdown.
-    });
-  </script>
-{{- end -}}

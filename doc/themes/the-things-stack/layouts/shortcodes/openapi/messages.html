@@ -1,5 +1,6 @@
 {{ $openapi := .Get "file" | index .Site.Data.api }}
-<div>
+{{- /* Generated reference is too large for the search index (tens of MB); the page title and intro stay searchable. */ -}}
+<div data-pagefind-ignore="all">
   <div id="api-messages-container" class="api-messages-container">
     {{- range $key, $value := $openapi.definitions }} {{ $k := replace $key "v3"
     "" }} {{ $lowerKey := lower $k }}

@@ -10,10 +10,10 @@
       </div>
       {{ end }}
       <div class="column is-9 is-8-desktop sidebar-middle">
-        <div class="docs-content">
+        <div class="docs-content"{{ if not (or .Params.noindex (eq .Section "sitemap")) }} data-pagefind-body data-pagefind-filter="section:{{ partial "section-name.html" . }}"{{ end }}>
           {{ $context := . }}
           {{ if or .Params.distributions (or .Params.new_in_version .Params.deprecated_in_version .Params.removed_in_version) }}
-            <div class="content-tags">
+            <div class="content-tags" data-pagefind-ignore="all">
               {{ with .Params.distributions }}
                 {{ $distributions := .}}
                 {{ partial "distributions" (dict "context" $context "distributions" $distributions) }}
@@ -33,8 +33,8 @@
         <div class="content">
           {{ .Content }}
         </div>
-        {{ partial "prev-next-in-section" . }}
-        {{ partial "feedback" . }}
+        <div data-pagefind-ignore="all">{{ partial "prev-next-in-section" . }}</div>
+        <div data-pagefind-ignore="all">{{ partial "feedback" . }}</div>
         </div>
       </div>
       {{ if $hasSidebar }}

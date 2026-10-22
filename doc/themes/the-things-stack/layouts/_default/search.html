@@ -1,0 +1,35 @@
+{{ define "main" }}
+{{- /* Search page. Results come from the Pagefind index built at deploy time (see Makefile). */ -}}
+<div class="search-page" data-pagefind-url="{{ "pagefind/pagefind.js" | relURL }}" data-base-url="{{ relURL "" }}" data-site-title="{{ site.Title }}">
+
+  <section class="search-hero">
+    <div class="container">
+      <h1 class="search-hero__title">Search the documentation</h1>
+      <p class="search-hero__lede">Guides, concepts, CLI commands and API reference for The Things Stack.</p>
+      <form class="search-form" id="search-form" role="search" action="" method="get">
+        <label for="search-input" class="is-sr-only">Search the documentation</label>
+        <div class="search-form__field">
+          {{ partial "icon.html" (dict "name" "search" "size" 24 "class" "search-form__icon") }}
+          <input id="search-input" class="search-form__input" type="search" name="q" placeholder="Search for a topic, command or device" autocomplete="off" enterkeyhint="search" autofocus>
+          <button type="button" class="search-clear" aria-label="Clear search">{{ partial "icon.html" (dict "name" "x" "size" 24) }}</button>
+        </div>
+        <button type="submit" class="button is-primary search-form__submit">Search</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="container search-body">
+    <div class="search-filters" id="search-filters" role="group" aria-label="Filter results by section" hidden></div>
+    <p class="search-status" id="search-status" role="status" aria-live="polite"></p>
+    <ol class="search-results" id="search-results"></ol>
+    <button type="button" class="button is-primary is-outlined search-more" id="search-more" hidden>Show more results</button>
+    <noscript>
+      <p class="search-status">Search needs JavaScript. You can <a href="{{ relURL "" }}">browse by section</a> or use the <a href="{{ relURL "sitemap/" }}">sitemap</a>.</p>
+    </noscript>
+  </section>
+
+</div>
+
+{{- $search := resources.Get "js/search.js" | js.Build (dict "target" "es2018") | resources.Minify | resources.Fingerprint }}
+<script src="{{ $search.Permalink }}" integrity="{{ $search.Data.Integrity }}" crossorigin="anonymous" defer></script>
+{{ end }}

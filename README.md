@@ -30,7 +30,12 @@ You can start a development server with live reloading by running
 
 ## Configuration
 
-Hugo accepts configuration parameters specified in [config](doc/config), most notably for baseURL, search, and feedback widget. Parameters can be specified as environment variables, e.g `params.search.enabled` becomes `HUGO_PARAMS_SEARCH_ENABLED`.
+Hugo accepts configuration parameters specified in [config](doc/config), most notably for baseURL and the feedback widget. Parameters can be specified as environment variables, e.g `params.feedback.enabled` becomes `HUGO_PARAMS_FEEDBACK_ENABLED`.
+
+
+## Search
+
+Search is built with [Pagefind](https://pagefind.app) (MIT, no account or external service). `make build.public` and `make build.internal` generate a static search index next to the site. To try search with the development server, run `make search.index` once (and again after content changes), then `make server`.
 
 ## Building the Documentation for Github Pages
 

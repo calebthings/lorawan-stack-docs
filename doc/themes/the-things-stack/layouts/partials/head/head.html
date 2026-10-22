@@ -11,9 +11,6 @@
   <link rel="apple-touch-icon" href="{{ "favicon-120.png" | relURL }}">
   {{- $style := resources.Get "css/theme.scss" | css.Sass | resources.Minify | resources.Fingerprint }}
   <link rel="stylesheet" href="{{ $style.Permalink }}" integrity="{{ $style.Data.Integrity }}" crossorigin="anonymous">
-  {{- if .Site.Params.search.enabled -}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-  {{- end }}
   {{- $scratch := newScratch }}
   {{- $scratch.Set "description" (or .Description (.Param "description")) }}
   {{- $scratch.Set "keywords" (delimit (or .Keywords (.Param "keywords")) ",") }}
