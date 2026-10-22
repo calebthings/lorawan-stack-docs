@@ -19,8 +19,10 @@ function addNavBarBurgers(){
       el.addEventListener('click', function() {
         var target = el.dataset.target
         var $target = document.getElementById(target)
-        el.classList.toggle('is-active')
+        var expanded = el.classList.toggle('is-active')
         $target.classList.toggle('is-active')
+        el.setAttribute('aria-expanded', expanded ? 'true' : 'false')
+        el.setAttribute('aria-label', expanded ? 'Close menu' : 'Open menu')
       })
     })
   }
@@ -40,7 +42,7 @@ function initializeTabsAndAnchors () {
 
   function addAnchor(element) {
     element.insertAdjacentHTML('beforeend',
-    `<a class="header-hash" href="#${element.id}" ariaLabel="Anchor">#</a>` )
+    `<a class="header-hash" href="#${element.id}" aria-label="Link to this section">#</a>` )
   }
 
   function addAnchors() {
@@ -189,9 +191,23 @@ function initializeNavGroups () {
   })
 }
 
+// Horizontally scrollable tables and tab bars must be reachable by keyboard.
+function makeScrollableRegionsFocusable () {
+  document.querySelectorAll('.content table, .tabs').forEach(function (el) {
+    if (el.scrollWidth > el.clientWidth && !el.hasAttribute('tabindex')) {
+      // Keep native table semantics; only add focusability and a name.
+      el.setAttribute('tabindex', '0')
+      if (el.tagName === 'TABLE' && !el.hasAttribute('aria-label')) {
+        el.setAttribute('aria-label', 'Scrollable table')
+      }
+    }
+  })
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   addNavBarBurgers()
   initializeNavGroups()
+  makeScrollableRegionsFocusable()
   initializeTabsAndAnchors()
   addLightboxHandler()
 })

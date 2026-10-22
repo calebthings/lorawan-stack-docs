@@ -2,7 +2,7 @@
 
 {{- $hasSidebar := not (eq .Page.File.Ext "html") -}}
 
-<div class="container" role="document">
+<div class="container">
   <div class="columns my-0 {{ if not $hasSidebar }}is-desktop{{ end }}">
       {{ if $hasSidebar }}
       <div class="column is-3 is-2-desktop sidebar-left">

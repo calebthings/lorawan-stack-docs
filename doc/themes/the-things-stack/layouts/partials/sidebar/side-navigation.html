@@ -1,14 +1,14 @@
 {{ $currentPage := . }}
 
-<nav class="side-navigation" aria-label="Main navigation">
+<nav class="side-navigation" aria-label="Section">
 
-<h2 class="title is-size-5">{{ .FirstSection.Name }}</h2>
+<p class="title is-size-5">{{ .FirstSection.Name }}</p>
 
 <ul class="menu-list">
-<a href="{{ .FirstSection.Permalink }}" class="{{ if eq $currentPage .FirstSection }}is-active{{ end }}">Overview</a>
+<li><a href="{{ .FirstSection.Permalink }}" class="{{ if eq $currentPage .FirstSection }}is-active{{ end }}"{{ if eq $currentPage .FirstSection }} aria-current="page"{{ end }}>Overview</a></li>
 {{- range .FirstSection.Pages.ByWeight }}
 <li>
-    <a href="{{ .Permalink }}" class="{{ if eq $currentPage . }}is-active{{ end }}">{{ .Name }}</a>
+    <a href="{{ .Permalink }}" class="{{ if eq $currentPage . }}is-active{{ end }}"{{ if eq $currentPage . }} aria-current="page"{{ end }}>{{ .Name }}</a>
     {{- if or (.IsAncestor $currentPage) (eq . $currentPage) }}
     {{ template "expandifancestor" (dict "section" . "goal" $currentPage ) }}
     {{ end }}
@@ -22,7 +22,7 @@
 <ul class="menu-list">
 {{ range . }}
   <li>
-    <a href="{{ .Permalink }}" class="{{ if eq $goal . }}is-active{{ end }}">{{ .Name }}</a>
+    <a href="{{ .Permalink }}" class="{{ if eq $goal . }}is-active{{ end }}"{{ if eq $goal . }} aria-current="page"{{ end }}>{{ .Name }}</a>
     {{ if or (.IsAncestor $goal) (eq . $goal) }}
     {{ template "expandifancestor" (dict "section" . "goal" $goal ) }}
     {{ end }}
